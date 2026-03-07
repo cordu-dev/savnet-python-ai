@@ -2,7 +2,6 @@
 Tipuri de date in Python
 """
 
-
 str1 = "Text"  # String
 int1 = 5  # Nr intreg
 float1 = 5.0  # Numar cu virgula mobila
@@ -44,15 +43,15 @@ print(hex(id(str1)))  # locatia in hexadecimal
 # # ===================================================
 # """
 
-# lista_muabila = [1, 2, 3]
-# print(lista_muabila)  # afiseaza lista
-# print(id(lista_muabila))  # afiseaza locatia listei in memorie
+lista_muabila = [1, 2, 3]
+print(lista_muabila)  # afiseaza lista
+print(id(lista_muabila))  # afiseaza locatia listei in memorie
 
-# lista_muabila[0] = 5  # schimbam valoarea elementului de pe pozitia 0 cu 5
-# print(lista_muabila)
-# print(
-#     id(lista_muabila)
-# )  # locatia listei in memorie ramane neschimbata => se pastreaza identitatea obiectului
+lista_muabila[0] = 5  # schimbam valoarea elementului de pe pozitia 0 cu 5
+print(lista_muabila)
+print(
+    id(lista_muabila)
+)  # locatia listei in memorie ramane neschimbata => se pastreaza identitatea obiectului
 
 # """
 # #  ====================================================================
@@ -60,17 +59,17 @@ print(hex(id(str1)))  # locatia in hexadecimal
 # #  ====================================================================
 # """
 
-# string_imuabil = "text"
-# print(string_imuabil)  # afiseaza variabila
-# print(id(string_imuabil))  # afiseaza locatia in memorie a variabilei
+string_imuabil = "text"
+print(string_imuabil)  # afiseaza variabila
+print(id(string_imuabil))  # afiseaza locatia in memorie a variabilei
 
-# string_imuabil = (
-#     string_imuabil + "s"
-# )  # concatenam valoarea variabilei cu un alt string "s"
-# print(string_imuabil)
-# print(
-#     id(string_imuabil)
-# )  # locatia in memorie este schimbata => se creaza o variabila noua cu valoarea schimbata
+string_imuabil = (
+    string_imuabil + "s"
+)  # concatenam valoarea variabilei cu un alt string "s"
+print(string_imuabil)
+print(
+    id(string_imuabil)
+)  # locatia in memorie este schimbata => se creaza o variabila noua cu valoarea schimbata
 
 # """
 #  ====================================
@@ -78,10 +77,10 @@ print(hex(id(str1)))  # locatia in hexadecimal
 #  ====================================
 # """
 
-# print(string_imuabil)  # afisarea valorii stocate intr-o variabila
-# print("Textul acesta nu a fost stocat intr-o variabila")  # afisarea unei valori
-# print(3 + 4)  # afisarea rezultatului unui calcul
-# print("Rezultatul este: ", 3 + 7)  # afisarea mai multor elemente separate prin virgula
+print(string_imuabil)  # afisarea valorii stocate intr-o variabila
+print("Textul acesta nu a fost stocat intr-o variabila")  # afisarea unei valori
+print(3 + 4)  # afisarea rezultatului unui calcul
+print("Rezultatul este: ", 3 + 7)  # afisarea mai multor elemente separate prin virgula
 
 # """
 #  ====================================
@@ -89,9 +88,9 @@ print(hex(id(str1)))  # locatia in hexadecimal
 #  ====================================
 # """
 
-# raspuns = input("Introduceti un numar: ")  # In interiorul functiei specificam un prompt
-# print(raspuns)  # raspunsul utilizatorului va fii stocat in variabila raspuns
-# print(type(raspuns))
+raspuns = input("Introduceti un numar: ")  # In interiorul functiei specificam un prompt
+print(raspuns)  # raspunsul utilizatorului va fii stocat in variabila raspuns
+print(type(raspuns))
 
 
 # """
@@ -101,60 +100,76 @@ print(hex(id(str1)))  # locatia in hexadecimal
 # """
 #  Transformarea unui sir care contine doar cifre in numar intreg
 # """
-# str_numeric = "5"
-# print(type(str_numeric))
-# int_numeric = int(str_numeric)
-# print(type(int_numeric))
+print("Str to int")
+str_numeric = "5"
+print(type(str_numeric))
+int_numeric = int(str_numeric)
+print(type(int_numeric))
 
 # """
 # Transformarea unui sir care contine doar cifre in numar intreg
 # """
-# str2_numeric = "6.7"
-# print(type(str2_numeric))
-# float_numeric = float(str_numeric)
-# print(type(float_numeric))
+print("Str to float")
+str2_numeric = "6.7"
+print(type(str2_numeric))
+float_numeric = float(str_numeric)
+print(type(float_numeric))
 
 # """
 #  Valori boolene
 # """
-# a = 0
-# print(
-#     bool(a)
-# )  # numerele pot fi transformate in valori boolene, unde 1 = True, 0 = False
 
-# b = None  # None este valoarea nula in Python si va fii False mereu
-# print(bool(b))
+print("Booleans")
+# Tipul e implicit ales când se instanțiază
+x = False
+print(f"x = {x}; type of x = {type(x)}")
 
+a = 0
+print(
+    bool(a)
+)  # numerele pot fi transformate in valori boolene, unde 1 = True, 0 = False
 
-# d = True  # True = 1, False = 0 cand transformam in int
-# print(int(d))
-# e = False
-# print(int(e))
+b = None  # None este valoarea nula in Python si va fii False mereu
+print(bool(b))
+
+print(bool(-11))
+print(bool("ceva"))
+print(bool(9.9))
+
+d = True  # True = 1, False = 0 cand transformam in int
+print(int(d))
+e = False
+print(int(e))
 
 # """
 #  Operatori aritmetici cu numere int si float
 # """
-# a = 5
-# b = 5
-# print(a + b)  # Adunare
-# print(a - b)  # Scadere
-# print(a * b)  # a ori b
-# print(a / b)  # a impartit la b = returneaza numar cu virgula
-# print(a // b)  # a impartit la b = returneaza numar intreg
-# print(a**b)  # a la puterea b
-# print(a % b)  # returneaza restul impartirii intre a si b
+a = 5
+b = 5
+print(a + b)  # Adunare
+print(a - b)  # Scadere
+print(a * b)  # a ori b
+print(a / b)  # a impartit la b = returneaza numar cu virgula
+print(a // b)  # a impartit la b = returneaza numar intreg
+print(a**b)  # a la puterea b
+print(a % b)  # returneaza restul impartirii intre a si b
 
 # """
 #  Operatori relationali cu numere int si float
 # """
-# print(a < b)  # True daca a mai mic ca b, False altfel
-# print(a <= b)  # True daca a mai mic sau egal cu b, False altfel
-# print(a > b)  # True daca a mai mare ca b
-# print(a >= b)  # True daca a mai mare sau egal cu b
-# print(a == b)  # True daca valoarea lui a este egala cu valoarea lui b
-# print(a != b)  # True daca valoarea lui a este diferita de valoarea lui b
-# print(a is b)  # True daca identitatea obiectului este aceeasi (locatia in memorie)
-# print(a is not b)  # true daca identitatea obiectului nu este aceeasi
+print(f"a < b: {a < b}")  # True daca a mai mic ca b, False altfel
+print(f"a <= b: {a <= b}")  # True daca a mai mic sau egal cu b, False altfel
+print(f"a > b: {a > b}")  # True daca a mai mare ca b
+print(f"a >= b: {a >= b}")  # True daca a mai mare sau egal cu b
+print(f"a == b: {a == b}")  # True daca valoarea lui a este egala cu valoarea lui b
+print(f"a != b: {a != b}")  # True daca valoarea lui a este diferita de valoarea lui b
+# Important - a este la aceeasi adresa de memorie pentru ca python optimizeaza (in the back)
+print(f"a is b: {a is b}")  # True daca identitatea obiectului este aceeasi (locatia in memorie)
+print(f"a is not b: {a is not b}")  # true daca identitatea obiectului nu este aceeasi
+
+
+x = y = 5  # sunt aceeasi locatie de memorie
+print(x is y)
 
 # """
 # Siruri
