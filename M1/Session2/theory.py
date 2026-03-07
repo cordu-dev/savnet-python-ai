@@ -141,9 +141,9 @@ print(int(d))
 e = False
 print(int(e))
 
-# """
-#  Operatori aritmetici cu numere int si float
-# """
+"""
+ Operatori aritmetici cu numere int si float
+"""
 a = 5
 b = 5
 print(a + b)  # Adunare
@@ -171,79 +171,96 @@ print(f"a is not b: {a is not b}")  # true daca identitatea obiectului nu este a
 x = y = 5  # sunt aceeasi locatie de memorie
 print(x is y)
 
-# """
-# Siruri
-# """
-# string1 = "Acesta este un sir"
-# string2 = "Acesta este un sir"
+# Print memory addresses of variables
+print(f"id(a): {id(a)}")  # a = 5
+print(f"id(b): {id(b)}")  # b = 5  
+print(f"id(x): {id(x)}")  # x = 5 (assigned from y=5)
+print(f"id(y): {id(y)}")  # y = 5
+# All have the same id because Python optimizes small integers (-5 to 256)
+# by reusing the same memory location for the same integer value
 
-# string3 = 'Acesta este un "sir".'
-# string4 = "Acesta este un 'sir'."
+"""
+Siruri
+"""
+string1 = "Acesta este un sir"
+string2 = "Acesta este un sir"
+
+string3 = 'Acesta este un "sir".'
+string4 = "Acesta este un 'sir'."
 
 # """
 # # # Escape character = \
 # """
-# # # - pentru a "scutii" urmatorul caracter de la a fii luat in considerare in anumite situatii specifice
-# # # - iau anumite actiuni in functie de combinatia de caractere
+# # - pentru a "scutii" urmatorul caracter de la a fii luat in considerare in anumite situatii specifice
+# # - iau anumite actiuni in functie de combinatia de caractere
 
-# print('Mergem la "scoala?"')  # " nu sunt considerate delimitarea sirului
-# print("C:\\User\\local\\Python")  # \ nu este considerat escape character
-# print("1\n2\n3\n4\n")  # linie noua
-# print("Bun\tvenit\tla\tcursul\tPython")  # tab
-# print("Pythonnnnn \b")  # backspace
+
+print("Mergem la \"socala\"")
+print('Mergem la "scoala?"')  # " nu sunt considerate delimitarea sirului
+print("C:\\User\\local\\Python")  # \ nu este considerat escape character
+print("1\n2\n3\n4\n")  # linie noua
+print("Bun\tvenit\tla\tcursul\tPython")  # tab
+print("Pythonnnnn \b")  # backspace
 
 # """
 #  Manipularea sirurilor
 # """
-# x = 5
-# print(type(str(x)))  # Transforma elementul in str
+print("Manipularea sirurilor")
+x = 5
+print(type(str(x)))  # Transforma elementul in str
 
-# #
-# print(
-#     "ABCD" + "EFGH" + str(6)
-# )  # Concatenarea sirurilor = TREBUIE SA FIE STR TOATE ELEMENTELE CONCATENATE (daca nu sunt => str(i))
-# print(string1 + string2)
+print(
+    "ABCD" + "EFGH" + str(6)
+)  # Concatenarea sirurilor = TREBUIE SA FIE STR TOATE ELEMENTELE CONCATENATE (daca nu sunt => str(i))
+print(string1 + string2)
 
-# print(string1 * 3)  # multiplica sirul
+print(string1 * 3)  # multiplica sirul
 
-# print(string1[0])  # extragerea cracterelor din sir
+print(string1[0])  # extragerea cracterelor din sir
 
-# print(
-#     string1[:4]
-# )  # extragerea caracterelor de la elementul 0 (default) pana la elementul de pe pozitia 4
-# print(string1[3:6])  # extragerea caracterelor intre pozitia 3 si 6 - 1
-# print(string1[::])  # extragerea de la 0 (default) pana la capat(default)
-# print(
-#     string1[::2]
-# )  # extragerea de la 0 pana la capat cu salt de 2 (din 2 in 2 caractere)
-# print(string1[::-1])  # inversarea sirului
+print(
+    string1[:4]
+)  # extragerea caracterelor de la elementul 0 (default) pana la elementul de pe pozitia 4
+print(string1[3:6])  # extragerea caracterelor intre pozitia 3 si 6 - 1
+print(string1[::])  # extragerea de la 0 (default) pana la capat(default)
+print(
+    string1[::2]
+)  # extragerea de la 0 pana la capat cu salt de 2 (din 2 in 2 caractere)
+print(string1[::-1])  # inversarea sirului
 
-# print(len(string1))  # afiseaza lungimea sirului intr-un numar intreg
+print(len(string1))  # afiseaza lungimea sirului intr-un numar intreg
 
 # """
 #  Afisarea sirurilor
 # """
 
-# print("Mesaj: " + string1)  # Concatenare
-# print(
-#     "mesaj:", string1
-# )  # Afiseaza elementele enumerate folosind ca delimitator spatiul (default)
-# print(
-#     "Mesaj:", string1, string2, string3, sep="_"
-# )  # Afiseaza elementele enumerate folosind separatorul dat
-# print(
-#     "Mesaj:", string1, end="..."
-# )  # Pune la finalul elementelor "...", by default: end="\n"
+print("Mesaj: " + string1)  # Concatenare
+print(
+    "mesaj:", string1
+)  # Afiseaza elementele enumerate folosind ca delimitator spatiul (default)
+print(
+    "Mesaj:", string1, string2, string3, sep="_"
+)  # Afiseaza elementele enumerate folosind separatorul dat
+print(
+    "Mesaj:", string1, end="..."
+)  # Pune la finalul elementelor "...", by default: end="\n"
 
 # """
 #  Formatarea sirurilor
 # """
 
-# valoare = input("Cati ani aveti? ")
-# print(f"Utilizatorul are {valoare} ani.")  # formatare cu f
-# print("Utilizatorul are {} ani.".format(valoare))  # formatare cu metoda de sir format()
-# print(
-#     "Utilizatorul are {} ani si in anul 2027 va avea {} ani.".format(
-#         valoare, int(valoare) + 5
-#     )
-# )
+valoare = input("Cati ani aveti? ")
+print(f"Utilizatorul are {valoare} ani.")  # formatare cu f
+print("Utilizatorul are {} ani.".format(valoare))  # formatare cu metoda de sir format()
+print(
+    "Utilizatorul are {} ani si in anul 2027 va avea {} ani.".format(
+        valoare, int(valoare) + 1
+    )
+)
+print(
+    "Utilizatorul are {age} ani si in anul 2027"
+    " va avea {age_in_2027} ani.".format(
+        age=valoare,
+        age_in_2027=int(valoare) + 1
+    )
+)
