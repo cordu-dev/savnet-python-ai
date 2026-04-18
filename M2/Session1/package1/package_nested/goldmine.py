@@ -1,0 +1,2 @@
+def miner():
+    return None
