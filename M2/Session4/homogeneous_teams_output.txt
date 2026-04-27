@@ -1,0 +1,47 @@
+Homogeneous teams based on self-score
+========================================
+Total students: 18
+Team size: 3
+Number of teams: 6
+
+Team 1
+  Students: [10, 12, 1]
+  Scores:   [3, 4, 5]
+  Average:  4.00
+  Range:    3 to 5 (spread = 2)
+  Reason:   This team is still fairly homogeneous because the score difference is small.
+
+Team 2
+  Students: [2, 3, 4]
+  Scores:   [5, 5, 5]
+  Average:  5.00
+  Range:    5 to 5 (spread = 0)
+  Reason:   This team is very homogeneous because all students gave themselves the same score.
+
+Team 3
+  Students: [11, 14, 6]
+  Scores:   [5, 5, 6]
+  Average:  5.33
+  Range:    5 to 6 (spread = 1)
+  Reason:   This team is homogeneous because the students have very close self-evaluations.
+
+Team 4
+  Students: [8, 13, 9]
+  Scores:   [6, 6, 7]
+  Average:  6.33
+  Range:    6 to 7 (spread = 1)
+  Reason:   This team is homogeneous because the students have very close self-evaluations.
+
+Team 5
+  Students: [15, 18, 7]
+  Scores:   [7, 7, 8]
+  Average:  7.33
+  Range:    7 to 8 (spread = 1)
+  Reason:   This team is homogeneous because the students have very close self-evaluations.
+
+Team 6
+  Students: [16, 5, 17]
+  Scores:   [8, 9, 9]
+  Average:  8.67
+  Range:    8 to 9 (spread = 1)
+  Reason:   This team is homogeneous because the students have very close self-evaluations.
