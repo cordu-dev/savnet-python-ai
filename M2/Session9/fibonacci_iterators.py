@@ -1,6 +1,6 @@
 class Fib:
     # FIB VAL: 1 1 2 3 5 ...
-    # FIN IDX: 0 1 2 3 4 ...
+    # FIB IDX: 0 1 2 3 4 ...
     def __init__(self, max_index):
         print("__init__")
         self.__max_index = max_index
@@ -48,3 +48,12 @@ for i in my_iterator:
     # After, it uses the iterator instance to call the __next__ from within.
     # It will stop only when __next__ raise StopIteration.
     print(i)
+
+print("-" * 20)
+
+fib_obj = Fib(4)
+print(next(fib_obj))
+print(next(fib_obj))
+print(next(fib_obj))
+print(next(fib_obj))
+# print(next(fib_obj)) - this will raise StopIteration
