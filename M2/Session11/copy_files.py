@@ -21,7 +21,8 @@ total = 0
 try:
     bytes_read = source_file.readinto(buffer)
     while bytes_read > 0:
-        bytes_written = dest_file.write(buffer[:bytes_read])  # Write into file at latest position
+        # Write into file at latest position
+        bytes_written = dest_file.write(buffer[:bytes_read])
         total += bytes_written
         bytes_read = source_file.readinto(buffer)
 
