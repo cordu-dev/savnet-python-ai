@@ -7,7 +7,7 @@ ROW_COUNT = 1_000
 START_DATE = date(2026, 1, 1)
 SHIFTS = ["Morning", "Evening", "Night"]
 MACHINES = ["M1", "M2", "M3", "M4", "M5"]
-OUTPUT_FILE = Path(__file__).resolve().parents[1] / "production_log.csv"
+OUTPUT_FILE = Path(__file__).resolve().parent / "data" / "production_log.csv"
 
 
 def build_row(index):
