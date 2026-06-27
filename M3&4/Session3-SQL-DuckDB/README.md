@@ -16,8 +16,12 @@ You will write SQL directly on Parquet data using DuckDB — no database server 
 ## 1 — Install Dependencies
 
 ```bash
+# if no venv yet created
+python -m venv .venv
+# from the project root
+source .venv/bin/activate  # or: .venv\Scripts\activate on Windows
+# install all requirements
 pip install -r requirements.txt
-```
 
 ---
 
