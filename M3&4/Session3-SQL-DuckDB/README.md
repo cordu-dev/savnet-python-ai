@@ -16,7 +16,7 @@ You will write SQL directly on Parquet data using DuckDB — no database server 
 ## 1 — Install Dependencies
 
 ```bash
-pip install pandas pyarrow numpy duckdb jupyter
+pip install -r requirements.txt
 ```
 
 ---
