@@ -30,6 +30,8 @@ designed to be followed solo, at your own pace.
 
 - Project virtual environment active (from repo root):
   ```bash
+  python -m venv .venv                 # OPTIONAL if the .venv folder is not in place
+
   source .venv/bin/activate            # Windows: .venv\Scripts\activate
   pip install -r requirements.txt      # installs langchain + langchain-google-genai + python-dotenv
   ```
