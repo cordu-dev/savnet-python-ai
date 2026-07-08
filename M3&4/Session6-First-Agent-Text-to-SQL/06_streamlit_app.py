@@ -286,18 +286,21 @@ st.markdown("""
 st.markdown("### 💡 Quick Questions")
 col1, col2, col3 = st.columns(3)
 
-preset_question = ""
+# Initialize session state for the user query if it doesn't exist
+if "user_query" not in st.session_state:
+    st.session_state.user_query = ""
+
 if col1.button("Molding station scrap rate"):
-    preset_question = "What is the scrap rate of the molding station?"
+    st.session_state.user_query = "What is the scrap rate of the molding station?"
 elif col2.button("Conductor resistance anomalies"):
-    preset_question = "What is the average resistance of the heating conductors?"
+    st.session_state.user_query = "What is the average resistance of the heating conductors?"
 elif col3.button("Total yield per product type"):
-    preset_question = "Find the total count of OK vs not OK results for each product type at the quality check station"
+    st.session_state.user_query = "Find the total count of OK vs not OK results for each product type at the quality check station"
 
 # --- Query Interface -----------------------------------------------------
 user_input = st.text_input(
     "Ask a question about the production data:",
-    value=preset_question if preset_question else "",
+    key="user_query",
     placeholder="e.g. What is the average cycle time at molding for premium products?"
 )
 

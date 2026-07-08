@@ -84,6 +84,7 @@ if __name__ == "__main__":
     
     # 2. Define the business question
     question = "What is the scrap rate of the molding station?"
+
     print(f"\nUser Question: '{question}'")
     
     # 3. Ask LLM to generate SQL

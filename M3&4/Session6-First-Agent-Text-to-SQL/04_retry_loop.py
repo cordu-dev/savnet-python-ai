@@ -21,7 +21,7 @@ Run it:
 import duckdb
 import llm_utils as llm
 import db_utils
-from 03_sql_validator import validate_sql, clean_sql
+from sql_utils import validate_sql, clean_sql
 
 SYSTEM_PROMPT = """You are a DuckDB SQL expert. Given the database schema below, write a single valid SQL query that answers the user's question.
 
