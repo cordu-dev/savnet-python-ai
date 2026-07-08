@@ -32,7 +32,7 @@ We will use **Mistral AI**'s specialized coding model, **Codestral**, for this l
    ```
 2. **Install the Mistral LangChain integration**:
    ```bash
-   pip install langchain-mistralai
+   pip install -r requirements.txt
    ```
 3. **Get a free Mistral API key**:
    - Go to [Mistral Console](https://console.mistral.ai/) and sign up.
@@ -54,31 +54,32 @@ We will use **Mistral AI**'s specialized coding model, **Codestral**, for this l
 
 Run these files step-by-step. Each file introduces a single concept, followed by a **Challenge** to test your understanding.
 
-### [00_setup_check.py](file:///Users/lucian/Projects/savnet/savnet-python-ai/M3&4/Session6-First-Agent-Text-to-SQL/00_setup_check.py)
+### [00_setup_check.py](00_setup_check.py)
+
 * **Goal:** Verify that your virtual environment is active, packages are installed, and your Mistral key successfully communicates with the server.
 * **Run:** `python 00_setup_check.py`
 
-### [01_schema_extractor.py](file:///Users/lucian/Projects/savnet/savnet-python-ai/M3&4/Session6-First-Agent-Text-to-SQL/01_schema_extractor.py)
+### [01_schema_extractor.py](01_schema_extractor.py)
 * **Goal:** Understand context engineering. Learn how to extract database catalog parameters (tables, column names, data types) from DuckDB and format them into a clean string to guide the LLM.
 * **Run:** `python 01_schema_extractor.py`
 
-### [02_raw_text_to_sql.py](file:///Users/lucian/Projects/savnet/savnet-python-ai/M3&4/Session6-First-Agent-Text-to-SQL/02_raw_text_to_sql.py)
+### [02_raw_text_to_sql.py](02_raw_text_to_sql.py)
 * **Goal:** Build the raw Text-to-SQL translation pipeline. Send the schema and user question to Codestral, clean the output, and run it directly in DuckDB.
 * **Run:** `python 02_raw_text_to_sql.py`
 
-### [03_sql_validator.py](file:///Users/lucian/Projects/savnet/savnet-python-ai/M3&4/Session6-First-Agent-Text-to-SQL/03_sql_validator.py)
+### [03_sql_validator.py](03_sql_validator.py)
 * **Goal:** Implement safety guardrails. Build static analysis filters that reject unsafe queries containing modification keywords or unauthorized system catalog access.
 * **Run:** `python 03_sql_validator.py`
 
-### [04_retry_loop.py](file:///Users/lucian/Projects/savnet/savnet-python-ai/M3&4/Session6-First-Agent-Text-to-SQL/04_retry_loop.py)
+### [04_retry_loop.py](04_retry_loop.py)
 * **Goal:** Implement self-correction. If a query fails to validate or execute, catch the error, feed the failure history back to the LLM, and let it self-correct.
 * **Run:** `python 04_retry_loop.py`
 
-### [05_explanation.py](file:///Users/lucian/Projects/savnet/savnet-python-ai/M3&4/Session6-First-Agent-Text-to-SQL/05_explanation.py)
+### [05_explanation.py](05_explanation.py)
 * **Goal:** Humanize the database. Feed the SQL results and original question back to Mistral to generate a natural, structured plain-English answer for supervisors.
 * **Run:** `python 05_explanation.py`
 
-### [06_streamlit_app.py](file:///Users/lucian/Projects/savnet/savnet-python-ai/M3&4/Session6-First-Agent-Text-to-SQL/06_streamlit_app.py)
+### [06_streamlit_app.py](06_streamlit_app.py)
 * **Goal:** Build the complete dashboard. An interactive interface featuring a schema sidebar, text input, real-time agent execution logging (`st.status`), raw tables, and dynamic visual charting.
 * **Run:** `streamlit run 06_streamlit_app.py`
 
