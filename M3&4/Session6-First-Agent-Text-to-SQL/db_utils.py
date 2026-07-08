@@ -25,7 +25,6 @@ TABLE_FILES = {
     "station_tapitat": "station_tapitat.parquet",
 }
 
-
 def get_db_connection() -> duckdb.DuckDBPyConnection:
     """Connect to an in-memory DuckDB database and register the Parquet files as views."""
     con = duckdb.connect(database=":memory:")
@@ -56,8 +55,9 @@ def get_db_connection() -> duckdb.DuckDBPyConnection:
 def get_database_schema(con: duckdb.DuckDBPyConnection) -> str:
     """
     Query the DuckDB information schema and build a clean, readable text
-    representation of all registered tables and columns.
+    representation of all registered tables, descriptions, columns, and sample rows.
     """
+    import pyarrow.parquet as pq
     schema_str = []
     
     # Get all tables registered in the database
@@ -65,6 +65,27 @@ def get_database_schema(con: duckdb.DuckDBPyConnection) -> str:
     
     for (table_name,) in tables:
         schema_str.append(f"Table: {table_name}")
+        
+        # 1. Dynamically read metadata from Parquet schema using PyArrow
+        description = "No description available"
+        col_descs = {}
+        
+        file_name = TABLE_FILES.get(table_name)
+        if file_name:
+            file_path = DATA_DIR / file_name
+            if file_path.exists():
+                try:
+                    parquet_schema = pq.read_schema(file_path)
+                    if parquet_schema.metadata and b"description" in parquet_schema.metadata:
+                        description = parquet_schema.metadata[b"description"].decode("utf-8")
+                    
+                    for field in parquet_schema:
+                        if field.metadata and b"description" in field.metadata:
+                            col_descs[field.name] = field.metadata[b"description"].decode("utf-8")
+                except Exception:
+                    pass
+        
+        schema_str.append(f"Description: {description}")
         schema_str.append("Columns:")
         
         # Query column information for the current table
@@ -73,8 +94,31 @@ def get_database_schema(con: duckdb.DuckDBPyConnection) -> str:
         ).fetchall()
         
         for col_name, col_type in columns:
-            schema_str.append(f"  - {col_name} ({col_type})")
+            col_desc = col_descs.get(col_name)
+            if col_desc:
+                schema_str.append(f"  - {col_name} ({col_type}): {col_desc}")
+            else:
+                schema_str.append(f"  - {col_name} ({col_type})")
             
+        # 2. Fetch first 3 sample rows
+        sample_rows = con.execute(f"SELECT * FROM {table_name} LIMIT 3").fetchall()
+        if sample_rows:
+            schema_str.append("Sample Rows (up to 3):")
+            col_names = [col[0] for col in columns]
+            for row in sample_rows:
+                # Construct a clean dictionary format for the row values
+                row_dict = {}
+                for col, val in zip(col_names, row):
+                    if val is None:
+                        row_dict[col] = None
+                    elif isinstance(val, (int, float)):
+                        row_dict[col] = val
+                    elif hasattr(val, "isoformat"):
+                        row_dict[col] = val.isoformat()
+                    else:
+                        row_dict[col] = str(val)
+                schema_str.append(f"  {row_dict}")
+                
         schema_str.append("")  # empty line separator
         
     return "\n".join(schema_str)

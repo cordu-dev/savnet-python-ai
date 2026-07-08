@@ -31,6 +31,143 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
+import pyarrow.parquet as pq
+
+# ---------------------------------------------------------------------------
+# Metadata Spec
+# ---------------------------------------------------------------------------
+METADATA_SPEC = {
+    "materials_stock": {
+        "description": "Current raw materials stock, inventory levels, and reorder thresholds",
+        "columns": {
+            "material_id": "Unique identifier for the material SKU",
+            "material_name": "Full descriptive name of the material",
+            "material_type": "Broad category of the material",
+            "grade": "Grade quality classification of the material (e.g. Grade-A, Grade-B, Standard)",
+            "unit": "Unit of measurement for inventory quantities",
+            "quantity_in_stock": "Current quantity of the material in stock",
+            "reorder_threshold": "Stock level below which a reorder is triggered",
+            "supplier": "Name of the supplier who provides this material",
+            "last_updated": "Timestamp when the stock level was last updated",
+        }
+    },
+    "materials_log": {
+        "description": "Audit log of material transactions, tracking when materials were used and by which operator",
+        "columns": {
+            "log_id": "Unique identifier for the material log entry",
+            "timestamp": "Timestamp of the material consumption/transaction",
+            "material_type": "Type of material used (e.g. Mg_ingot, foam_polyurethane, leather, conductor_wire, adhesive, dye)",
+            "batch_id": "Production batch identifier associated with this material log",
+            "transaction_type": "Type of transaction (e.g. CONSUMED, WASTED)",
+            "quantity_used": "Quantity of material used or wasted in this transaction",
+            "unit": "Unit of measurement (e.g. kg, L, dm2, m)",
+            "operator_id": "Identifier of the operator who handled the material",
+            "station_id": "Station identifier where the material was consumed",
+        }
+    },
+    "station_molding": {
+        "description": "Molding station parameters for Mg (magnesium) skeleton injection molding",
+        "columns": {
+            "product_id": "Unique product identifier of the steering wheel",
+            "batch_id": "Batch identifier of the steering wheel",
+            "product_type": "Product model/type (PT55, PT66, PT77)",
+            "timestamp": "Timestamp when the skeleton molding completed",
+            "shift": "Working shift name (Morning, Evening, Night)",
+            "operator_id": "Identifier of the molding station operator",
+            "mold_tool_id": "Identifier of the mold tool used",
+            "temperature_c": "Molding mold temperature in degrees Celsius",
+            "humidity_pct": "Relative ambient humidity in percent",
+            "pressure_bar": "Injection pressure in bar",
+            "mg_quantity_kg": "Quantity of magnesium alloy used in kilograms",
+            "duration_sec": "Molding cycle duration in seconds",
+            "cycle_result": "Molding cycle status result (OK or REWORK)",
+        }
+    },
+    "station_quality_check": {
+        "description": "Quality control check parameters, measurements, and status for finished products",
+        "columns": {
+            "qc_id": "Unique identifier for the quality check inspection entry",
+            "product_id": "Unique product identifier of the steering wheel",
+            "batch_id": "Batch identifier of the steering wheel",
+            "product_type": "Product model/type (PT55, PT66, PT77)",
+            "timestamp": "Timestamp of the inspection check",
+            "inspector_id": "Identifier of the quality inspector",
+            "dimensional_check": "Dimensional inspection outcome (PASS or FAIL)",
+            "surface_check": "Surface finish inspection outcome (PASS or FAIL)",
+            "weight_g": "Measured weight of the molded skeleton in grams",
+            "roundness_mm": "Roundness tolerance measurement deviation in millimeters",
+            "overall_result": "Overall quality check inspection outcome (PASS or FAIL)",
+            "notes": "Inspector's comments or notes",
+        }
+    },
+    "station_foaming": {
+        "description": "Polyurethane foaming parameters and results for steering wheel padding",
+        "columns": {
+            "product_id": "Unique product identifier of the steering wheel",
+            "batch_id": "Batch identifier of the steering wheel",
+            "product_type": "Product model/type (PT55, PT66, PT77)",
+            "timestamp": "Timestamp when the foaming process completed",
+            "operator_id": "Identifier of the foaming machine operator",
+            "foam_volume_ml": "Volume of polyurethane foam injected in milliliters",
+            "foam_density_gcm3": "Density of the foam in grams per cubic centimeter",
+            "temperature_c": "Temperature of the foaming mold in degrees Celsius",
+            "humidity_pct": "Relative ambient humidity in percent",
+            "pressure_bar": "Injection pressure in bar",
+            "cure_time_sec": "Curing duration inside the mold in seconds",
+            "foam_result": "Foam injection result flag (e.g. OK, UNDERFILL, OVERFILL)",
+        }
+    },
+    "station_conductor": {
+        "description": "Conductor wire installation and electrical testing parameters",
+        "columns": {
+            "product_id": "Unique product identifier of the steering wheel",
+            "batch_id": "Batch identifier of the steering wheel",
+            "product_type": "Product model/type (PT55, PT66, PT77)",
+            "timestamp": "Timestamp when the conductor installation completed",
+            "operator_id": "Identifier of the operator at the conductor station",
+            "wire_gauge_mm": "Diameter/gauge of the installation conductor wire in millimeters",
+            "resistance_ohm": "Measured electrical resistance of the wire in ohms",
+            "voltage_test_v": "Voltage applied during the electrical safety test in volts",
+            "installation_duration_sec": "Duration of the wire installation process in seconds",
+            "conductor_layout": "Conductor layout scheme (e.g. Single_Zone, Dual_Zone)",
+            "result": "Result of the conductor station quality check (OK or REWORK)",
+        }
+    },
+    "station_laser": {
+        "description": "Laser engraving power parameters and grip conductivity checks",
+        "columns": {
+            "product_id": "Unique product identifier of the steering wheel",
+            "batch_id": "Batch identifier of the steering wheel",
+            "timestamp": "Timestamp when laser engraving completed",
+            "operator_id": "Identifier of the laser station operator",
+            "laser_power_w": "Laser beam power setting in watts",
+            "burn_duration_sec": "Laser burning duration in seconds",
+            "burning_pattern": "Engraving pattern (e.g. Geometric_Grip, Ergonomic_Wave, Sport_Cross)",
+            "surface_temp_c": "Surface temperature after laser treatment in degrees Celsius",
+            "grip_conductivity_test": "Conductivity verification status (PASS or FAIL)",
+            "outcome": "Visual outcome of the grip surface (e.g. Priza_la_mana)",
+            "result": "Laser station overall status result (OK or REWORK)",
+        }
+    },
+    "station_tapitat": {
+        "description": "Upholstery station parameters for leather wrapping, stitching, and adhesive",
+        "columns": {
+            "product_id": "Unique product identifier of the steering wheel",
+            "batch_id": "Batch identifier of the steering wheel",
+            "product_type": "Product model/type (PT55, PT66, PT77)",
+            "timestamp": "Timestamp when the upholstery wrapping completed",
+            "operator_id": "Identifier of the upholstery operator",
+            "leather_type": "Type/quality of leather used (e.g. Standard, Premium, Sport)",
+            "leather_quantity_dm2": "Amount of leather used in square decimeters",
+            "stitching_pattern": "Stitching pattern applied (e.g. Classic, Double_Stitch, Sport_Diamond, Premium_Hand)",
+            "adhesive_ml": "Volume of adhesive used in milliliters",
+            "tapitat_duration_min": "Duration of the upholstering process in minutes",
+            "result": "Upholstery station result status (OK or REWORK)",
+        }
+    }
+}
+
 
 
 # ---------------------------------------------------------------------------
@@ -534,6 +671,40 @@ def generate_station_tapitat(pool: pd.DataFrame, rng: np.random.Generator) -> pd
     })
 
 
+def save_parquet_with_metadata(df: pd.DataFrame, path: Path, table_name: str):
+    """Convert DataFrame to PyArrow Table, attach metadata to schema and fields, and write."""
+    # Convert to Arrow Table
+    table = pa.Table.from_pandas(df, preserve_index=False)
+    
+    # Get metadata for table and columns
+    spec = METADATA_SPEC.get(table_name, {})
+    table_desc = spec.get("description", "")
+    col_specs = spec.get("columns", {})
+    
+    # Update schema-level metadata
+    existing_meta = table.schema.metadata or {}
+    new_meta = {**existing_meta}
+    if table_desc:
+        new_meta[b"description"] = table_desc.encode("utf-8")
+        
+    # Update column-level metadata
+    new_fields = []
+    for field in table.schema:
+        col_desc = col_specs.get(field.name)
+        if col_desc:
+            field_meta = {b"description": col_desc.encode("utf-8")}
+            if field.metadata:
+                field_meta.update(field.metadata)
+            new_fields.append(field.with_metadata(field_meta))
+        else:
+            new_fields.append(field)
+            
+    # Apply schema and write
+    new_schema = pa.schema(new_fields, metadata=new_meta)
+    table = table.cast(new_schema)
+    pq.write_table(table, path)
+
+
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
@@ -590,7 +761,8 @@ def main():
     print()
     for filename, df in configs:
         path = output_dir / filename
-        df.to_parquet(path, index=False, engine="pyarrow")
+        table_name = filename.replace(".parquet", "")
+        save_parquet_with_metadata(df, path, table_name)
         print(f"  {filename:<40} → {len(df):>7,} rows  ({path.stat().st_size / 1024:.1f} KB)")
 
     print(f"\nAll files written to '{output_dir.resolve()}'")
