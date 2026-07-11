@@ -2,6 +2,20 @@
 Step 01 — State and Nodes
 ===========================
 
+🏭 THE STORY & REAL-WORLD USE CASE:
+Imagine you're building an AI operator assistant for a busy manufacturing plant, "SavNet Molding Corp".
+Factory floor operators are constantly typing or dictating alerts into their mobile tablets or headsets.
+Because they're in a hurry and wearing heavy work gloves, their inputs are messy:
+   "   Check Mold Machine 5 TEMP!   " or "MOLDING MACHINE 2 OVERHEATED!!!"
+
+Before we feed this text to an LLM or database query, we need a reliable pipeline that:
+1. Cleans the text (strips spaces, standardizes casing).
+2. Analyzes it (determines query length, registers logs, or flags urgency).
+
+Instead of writing one massive, unmanageable block of Python code, we use LangGraph!
+We break this pipeline down into specialized, modular workers called "Nodes" (e.g., clean_query_node, analyze_query_node)
+that pass a shared folder of information called the "State" between them.
+
 Concepts:
     1. Shared State: In LangGraph, the State is the single source of truth.
        It is passed from node to node. We define it here using a `TypedDict`.
@@ -10,9 +24,8 @@ Concepts:
        the updates to the state. They do NOT need to return the entire state,
        only the keys they wish to update.
 
-Scenario:
-    We'll build a simple sequential graph:
-    [START] -> [clean_query] -> [analyze_query] -> [END]
+Graph Architecture:
+    [START] ➔ [clean_query] ➔ [analyze_query] ➔ [END]
 
 Run it:
     python 01_state_and_nodes.py
@@ -27,7 +40,7 @@ class GraphState(TypedDict):
     query: str          # Original question from the user
     cleaned_query: str  # Lowercased and stripped query
     query_length: int   # Character length of the query
-    analysis_logs: str  # Trace of what nodes did
+    analysis_logs: list[str]  # Trace of what nodes did
 
 # --- 2. Define the Nodes --------------------------------------------------
 # Note: Each function accepts `state: GraphState` and returns a dict representing
@@ -39,10 +52,14 @@ def clean_query_node(state: GraphState) -> dict:
     raw_query = state["query"]
     cleaned = raw_query.strip().lower()
     
+    # We initialize/retrieve the logs list and append our entry
+    current_logs = state.get("analysis_logs") or []
+    new_logs = current_logs + ["clean_query_node: success."]
+    
     # We return updates. LangGraph will merge this dictionary into the main state.
     return {
         "cleaned_query": cleaned,
-        "analysis_logs": "clean_query_node: success."
+        "analysis_logs": new_logs
     }
 
 
@@ -53,8 +70,8 @@ def analyze_query_node(state: GraphState) -> dict:
     length = len(cleaned)
     
     # We append to the logs and record the length
-    current_logs = state.get("analysis_logs", "")
-    new_logs = current_logs + "\nanalyze_query_node: calculated query length."
+    current_logs = state.get("analysis_logs") or []
+    new_logs = current_logs + ["analyze_query_node: calculated query length."]
     
     return {
         "query_length": length,
@@ -91,7 +108,8 @@ if __name__ == "__main__":
     print(f"Cleaned Query:   '{final_state['cleaned_query']}'")
     print(f"Query Length:    {final_state['query_length']} characters")
     print("\nLogs Trace:")
-    print(final_state["analysis_logs"])
+    for log in final_state["analysis_logs"]:
+        print(f"- {log}")
 
 # =========================================================================
 # YOUR CHALLENGE (10 min)
