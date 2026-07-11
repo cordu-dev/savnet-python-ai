@@ -120,9 +120,9 @@ def route_by_category(state: TriageState) -> str:
     """
     category = state["category"]
     if category == "production":
-        return "production_expert"
+        return "production"
     else:
-        return "maintenance_expert"
+        return "maintenance"
 
 # --- 4. Building the Graph ------------------------------------------------
 builder = StateGraph(TriageState)
