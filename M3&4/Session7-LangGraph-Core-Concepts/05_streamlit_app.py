@@ -15,6 +15,7 @@ Run it:
     streamlit run 05_streamlit_app.py
 """
 
+import uuid
 import streamlit as st
 import operator
 import base64
@@ -230,7 +231,6 @@ st.markdown('<div class="sub-title">Learn State Graphs, Routing, and Human-in-th
 
 # Generate Session variables to keep track of active run and thread IDs
 if "thread_id" not in st.session_state:
-    import uuid
     st.session_state.thread_id = str(uuid.uuid4())[:8]
 
 if "exec_logs" not in st.session_state:
