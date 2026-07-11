@@ -65,8 +65,6 @@ def run_valid_proof():
     print(f"\nFinal State: {final_state}")
     print("============================================================\n")
 
-    print(graph.get_graph().draw_ascii())
-
 
 def run_invalid_proof():
     print("=== PROOF 2: Running Graph with Invalid String Return Type ===")
@@ -79,8 +77,6 @@ def run_invalid_proof():
     graph = builder.compile()
     
     initial_state = {"message": "Hello class", "counter": 10}
-    
-    print(graph.get_graph().draw_ascii())
 
     try:
         graph.invoke(initial_state)
@@ -89,6 +85,7 @@ def run_invalid_proof():
         print(f"   Error Type: {type(e).__name__}")
         print(f"   Error Message: {e}")
     print("============================================================\n")
+
 # =====================================================================
 # 3. CHALLENGE: AgentState Counter Update
 # =====================================================================
