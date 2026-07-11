@@ -159,11 +159,11 @@ def general_expert_node(state: MasterState) -> dict:
 def route_classifier(state: MasterState) -> str:
     category = state.get("category", "general")
     if category == "production":
-        return "production_expert"
+        return "production"
     elif category == "maintenance":
-        return "maintenance_proposer"
+        return "maintenance"
     else:
-        return "general_expert"
+        return "general"
 
 # --- 4. Assemble and Compile the Graph -------------------------------------
 @st.cache_resource
@@ -280,16 +280,23 @@ with col_input:
     # Provide helpful quick buttons
     st.write("Suggested queries:")
     col_q1, col_q2, col_q3 = st.columns(3)
-    preset_query = ""
+    # Initialize query in session state so it persists and can be updated by presets
+    if "query_input" not in st.session_state:
+        st.session_state.query_input = ""
+
     if col_q1.button("📊 Row count of quality check table", use_container_width=True):
-        preset_query = "How many quality checks do we have registered in parquet?"
+        st.session_state.query_input = "How many quality checks do we have registered in parquet?"
     if col_q2.button("🔧 Stop molding machine 3 for calibration", use_container_width=True):
-        preset_query = "Schedule shutdown for Machine 3 immediately!"
+        st.session_state.query_input = "Schedule shutdown for Machine 3 immediately!"
     if col_q3.button("👋 Say hello to the supervisor", use_container_width=True):
-        preset_query = "Hi, who are you?"
+        st.session_state.query_input = "Hi, who are you?"
         
-    # Text input
-    user_query = st.text_input("Enter your factory floor request:", value=preset_query, placeholder="What would you like the graph to process?")
+    # Text input linked directly to session state via key
+    user_query = st.text_input(
+        "Enter your factory floor request:", 
+        key="query_input", 
+        placeholder="What would you like the graph to process?"
+    )
     
     # Check if API Key works
     key_working = True
