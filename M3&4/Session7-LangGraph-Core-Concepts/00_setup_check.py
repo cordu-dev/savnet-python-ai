@@ -72,6 +72,8 @@ try:
     print(f"\nInvoking graph with input: {initial_state}")
     result = graph.invoke(initial_state)
     print(f"Resulting state: {result}")
+
+    print(graph.get_graph().draw_ascii())
     
     print("\n🎉 Setup successful! You are ready to start with 01_state_and_nodes.py.")
     
