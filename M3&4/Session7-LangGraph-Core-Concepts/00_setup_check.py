@@ -22,7 +22,7 @@ from typing import TypedDict
 try:
     import langgraph
     from langgraph.graph import StateGraph, START, END
-    print(f"Step 1/3: LangGraph package imported successfully (v{langgraph.__version__}).")
+    print(f"Step 1/3: LangGraph package imported successfully (v{langgraph}).")
 except ImportError:
     print("\n[ERROR] LangGraph is not installed!")
     print("Please run: pip install langgraph")
