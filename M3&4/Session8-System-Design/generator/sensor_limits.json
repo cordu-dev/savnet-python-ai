@@ -1,0 +1,267 @@
+{
+  "ST-100": {
+    "station_name": "Magnesium Skeleton Casting",
+    "sensors": {
+      "clamp_force": {
+        "brief": "Die clamping force holding the mold shut",
+        "description": "We collect clamp force to ensure the casting machine holds the mold halves together with enough pressure to resist the explosive force of liquid magnesium injection. If clamp force falls too low (below 580 tons), molten metal leaks out the parting line, creating excess metal 'flash' (burrs) that operators must manually trim, or causing severe splash hazards. If force exceeds 620 tons, it induces premature mechanical fatigue on the casting die structure, mold core plates, and machine toggle joints, leading to micro-cracks. Foundry operators and maintenance supervisors monitor this reading to balance mold life against flash defects.",
+        "unit": "tons",
+        "limits": {
+          "normal": [580.0, 620.0],
+          "warning": [570.0, 630.0],
+          "critical": [550.0, 650.0]
+        }
+      },
+      "melt_temp": {
+        "brief": "Temperature of the molten magnesium alloy AM60B",
+        "description": "Collected to verify the liquid alloy is at the ideal viscosity for injection. If too hot (above 680°C), the magnesium oxidizes rapidly in the holding furnace and has poor structural characteristics after solidification. If too cold (below 640°C), it begins to solidify prematurely, causing 'cold shut' defects where separate metal flows fail to fuse completely inside the die channels. Structural engineers and quality inspectors care about this because it directly determines the mechanical strength and crash ductility of the steering wheel skeleton.",
+        "unit": "°C",
+        "limits": {
+          "normal": [640.0, 680.0],
+          "warning": [630.0, 690.0],
+          "critical": [620.0, 700.0]
+        }
+      },
+      "injection_pressure": {
+        "brief": "Pressure of the piston forcing metal into the die",
+        "description": "Measures the pressure profile of the hydraulic ram injecting molten metal. Low pressure (below 680 bar) leads to incomplete cavity filling ('underfill' or 'short shot' defects), leaving voids in the wheel structure. High pressure (above 740 bar) stresses the die mold and forces liquid magnesium into vacuum exhaust lines, causing line blockages and flashing. Process technicians monitor this to optimize the hydraulic ram velocity curve.",
+        "unit": "bar",
+        "limits": {
+          "normal": [680.0, 740.0],
+          "warning": [660.0, 760.0],
+          "critical": [640.0, 780.0]
+        }
+      },
+      "die_temp": {
+        "brief": "Pre-heating temperature of the casting die mold",
+        "description": "Ensures the mold tool is at a stable operating temperature to prevent thermal shock. If the die is too cold (below 200°C), the hot magnesium freezes too quickly on contact, causing surface defects, ripples, and shrinkage cracks. If too hot (above 230°C), cooling and solidification cycle times are delayed, which lowers production throughput and accelerates mold thermal fatigue. Tooling maintenance engineers review this to schedule mold cooling channel cleaning.",
+        "unit": "°C",
+        "limits": {
+          "normal": [200.0, 230.0],
+          "warning": [190.0, 240.0],
+          "critical": [180.0, 250.0]
+        }
+      },
+      "vacuum_level": {
+        "brief": "Vacuum level inside the die cavity to prevent porosity",
+        "description": "Measures the air pressure extracted from the die cavity before metal injection. Air left in the mold gets trapped inside the liquid metal as gas bubbles, resulting in internal 'porosity' defects. If vacuum level drops (pressure exceeds 50 mbar), internal structural porosity climbs. Metallurgical quality engineers care about this because high porosity can cause the steering wheel armature to fracture under severe steering torque or crash loads.",
+        "unit": "mbar",
+        "limits": {
+          "normal": [30.0, 50.0],
+          "warning": [20.0, 55.0],
+          "critical": [0.0, 60.0]
+        }
+      }
+    }
+  },
+  "ST-200": {
+    "station_name": "Polyurethane Foaming",
+    "sensors": {
+      "mold_temp": {
+        "brief": "Temperature of the foaming mold cavity",
+        "description": "Ensures the foaming mold walls are at the ideal temperature to sustain the exothermic chemical reaction. If too low (below 45°C), the polyurethane chemicals fail to expand fully, causing 'short mold' defects (empty zones in the padding). If too high (above 55°C), the reaction proceeds too rapidly, generating internal gas voids, cracking, and a sticky, rough outer skin. Molding supervisors monitor this to verify mold heating band calibration.",
+        "unit": "°C",
+        "limits": {
+          "normal": [45.0, 55.0],
+          "warning": [42.0, 58.0],
+          "critical": [40.0, 60.0]
+        }
+      },
+      "polyol_temp": {
+        "brief": "Temperature of incoming Polyol chemical component",
+        "description": "Polyol temperature affects viscosity and reaction kinetics. If too hot (above 25°C), viscosity drops, causing metering pumps to over-deliver and speeding up the foaming reaction. If too cold (below 22°C), viscosity rises, causing pump blockage and poor mixing. Maintenance technicians and chemical suppliers check this to maintain batch-to-batch consistency.",
+        "unit": "°C",
+        "limits": {
+          "normal": [22.0, 25.0],
+          "warning": [21.0, 26.0],
+          "critical": [20.0, 27.0]
+        }
+      },
+      "iso_temp": {
+        "brief": "Temperature of incoming Isocyanate chemical component",
+        "description": "Isocyanate temperature affects viscosity and reaction kinetics. If too hot (above 25°C), reaction kinetics accelerate, causing rapid gelation and skin defects. If too cold (below 22°C), viscosity spikes, leading to mixing imbalances. Maintenance technicians and chemical suppliers check this to maintain batch-to-batch consistency.",
+        "unit": "°C",
+        "limits": {
+          "normal": [22.0, 25.0],
+          "warning": [21.0, 26.0],
+          "critical": [20.0, 27.0]
+        }
+      },
+      "polyol_flow_rate": {
+        "brief": "Dispensing flow rate of Polyol component A",
+        "description": "Tracks the mass flow rate of Polyol injected. Lower flow rates mean insufficient material, leading to thin/underfill cushioning. High flow rates cause over-injection and high density, making the steering wheel rim feel rock-hard instead of soft and ergonomic. Quality inspectors monitor this to maintain weight consistency.",
+        "unit": "g/s",
+        "limits": {
+          "normal": [98.0, 102.0],
+          "warning": [96.0, 104.0],
+          "critical": [94.0, 106.0]
+        }
+      },
+      "iso_flow_rate": {
+        "brief": "Dispensing flow rate of Isocyanate component B",
+        "description": "Tracks the mass flow rate of Isocyanate injected. If flow drops (e.g. below 104 g/s due to valve clogging), the chemical ratio shifts, leaving uncured soft spots. If it spikes (above 108 g/s), the foam cures too hard and becomes brittle. Process engineers track this to schedule mix-head nozzle cleaning.",
+        "unit": "g/s",
+        "limits": {
+          "normal": [104.0, 108.0],
+          "warning": [100.0, 110.0],
+          "critical": [95.0, 115.0]
+        }
+      },
+      "mixing_ratio": {
+        "brief": "Ratio of Polyol to Isocyanate mixture (Target 100:106)",
+        "description": "Calculated stoichiometry ratio. If the ratio drops (low Isocyanate, e.g. < 104), the foam remains sticky, soft, and never cures fully. If the ratio rises (high Isocyanate, e.g. > 108), the polyurethane becomes too brittle and hard. Chemical engineers care about this because it determines the final tactile feel of the rim.",
+        "unit": "ratio",
+        "limits": {
+          "normal": [104.0, 108.0],
+          "warning": [102.0, 110.0],
+          "critical": [100.0, 112.0]
+        }
+      },
+      "injection_pressure": {
+        "brief": "Chemical injection pressure into the closed mold",
+        "description": "Monitors chemical injection pressure. If pressure drops (below 140 bar), the mixing head fails to blend Polyol and Isocyanate thoroughly, resulting in streaks of uncured chemicals and weak soft spots. Process engineers use this to track nozzle clogging.",
+        "unit": "bar",
+        "limits": {
+          "normal": [140.0, 160.0],
+          "warning": [135.0, 165.0],
+          "critical": [130.0, 170.0]
+        }
+      }
+    }
+  },
+  "ST-300": {
+    "station_name": "Conductor Winding",
+    "sensors": {
+      "winding_tension": {
+        "brief": "Tension force applied while wrapping the heating wire",
+        "description": "Measures the mechanical tension applied to the resistive copper wire during wrapping. Low tension (below 12 N) causes loose wire loops that can 'float' or shift during finishing, creating visible lumps under the leather. High tension (above 16 N) stretches and weakens the wire core, introducing micro-fractures that cause early wire breaks. Electrical assembly engineers monitor this tension to prevent quality defects.",
+        "unit": "N",
+        "limits": {
+          "normal": [12.0, 16.0],
+          "warning": [10.0, 18.0],
+          "critical": [8.0, 20.0]
+        }
+      },
+      "pressing_force": {
+        "brief": "Force embedding the elements flush into the foam",
+        "description": "Force applied by pressing rollers to embed the heating element flush. If force is too low (below 80 N), the wire remains raised, creating surface ridges. If too high (above 100 N), the rollers crush the polyurethane cells, causing localized rim depressions. Manufacturing engineers check this to verify mechanical tool alignment.",
+        "unit": "N",
+        "limits": {
+          "normal": [80.0, 100.0],
+          "warning": [75.0, 105.0],
+          "critical": [70.0, 110.0]
+        }
+      },
+      "crimp_force": {
+        "brief": "Mechanical force applied to wire connectors",
+        "description": "Ensures gas-tight compression of the wire crimp contacts. Low force (below 1.2 kN) creates a loose electrical contact, raising resistance and causing heating failures. High force (above 1.5 kN) crushes the connector tabs, slicing the copper core. Assembly operators care about this to ensure wiring harness integrity.",
+        "unit": "kN",
+        "limits": {
+          "normal": [1.2, 1.5],
+          "warning": [1.1, 1.6],
+          "critical": [1.0, 1.7]
+        }
+      }
+    }
+  },
+  "ST-400": {
+    "station_name": "Laser Surface Texturing",
+    "sensors": {
+      "laser_power": {
+        "brief": "Output power level of the CO2 etching laser",
+        "description": "Controls laser beam intensity. Low power (below 80 W) fails to burn away enough polyurethane skin, leaving the surface too smooth for adhesive bonding. High power (above 120 W) burns too deep, scorching the foam core and melting the underlying heating wire wrapped at Station 3. Laser safety officers and process engineers monitor this reading.",
+        "unit": "W",
+        "limits": {
+          "normal": [80.0, 120.0],
+          "warning": [70.0, 130.0],
+          "critical": [60.0, 140.0]
+        }
+      },
+      "laser_scan_speed": {
+        "brief": "Travel speed of the laser beam scanner",
+        "description": "Speeds up or slows down energy delivery. If scan speed is too low (below 800 mm/s), the laser dwells too long, causing burn spots. If too high (above 1000 mm/s), the surface is under-etched, leading to poor glue adhesion. Production managers care about this to optimize throughput.",
+        "unit": "mm/s",
+        "limits": {
+          "normal": [800.0, 1000.0],
+          "warning": [750.0, 1050.0],
+          "critical": [700.0, 1100.0]
+        }
+      },
+      "pulse_freq": {
+        "brief": "Laser pulse repetition frequency",
+        "description": "Determines texture density. Low frequency (below 30 kHz) results in discrete, dot-like etches instead of a continuous micro-groove texture. High frequency (above 50 kHz) creates overlapping pulses, yielding thermal buildup that melts the plastic. Quality specialists monitor this for surface micro-structure checks.",
+        "unit": "kHz",
+        "limits": {
+          "normal": [30.0, 50.0],
+          "warning": [25.0, 55.0],
+          "critical": [20.0, 60.0]
+        }
+      },
+      "robot_offset": {
+        "brief": "Robotic arm alignment positioning offset from target track",
+        "description": "Monitors spatial offset of the robotic arm. If offset drifts (above 0.15 mm), the laser beam misaligns with the target polyurethane track, missing the texturing path and potentially cutting directly into the heater wiring channels, severing the wire. Maintenance technicians care about this to track axis wear.",
+        "unit": "mm",
+        "limits": {
+          "normal": [0.0, 0.15],
+          "warning": [0.0, 0.18],
+          "critical": [0.0, 0.22]
+        }
+      },
+      "focal_distance": {
+        "brief": "Distance from focusing lens to polyurethane surface",
+        "description": "Controls laser spot diameter. If out-of-focus (outside 148-152 mm), the laser spot expands, reducing energy concentration and producing uneven, shallow texturing. Tooling setup operators calibrate this before every production shift.",
+        "unit": "mm",
+        "limits": {
+          "normal": [148.0, 152.0],
+          "warning": [146.0, 154.0],
+          "critical": [145.0, 155.0]
+        }
+      }
+    }
+  },
+  "ST-500": {
+    "station_name": "Leather Wrapping & Final Assembly",
+    "sensors": {
+      "wrapping_tension": {
+        "brief": "Manual or automated tension used to pull leather seams tight",
+        "description": "Measures physical wrapping pull. If tension is too low (below 20 N), the leather wraps loosely, causing cosmetic wrinkles. If tension is too high (above 25 N), it over-stretches the leather and puts tensile strain on the underlying heater wire. If the wire was weakened upstream (e.g. by laser offset), this tension breaks the wire. Master leather wrapping technicians monitor this.",
+        "unit": "N",
+        "limits": {
+          "normal": [20.0, 25.0],
+          "warning": [18.0, 28.0],
+          "critical": [15.0, 32.0]
+        }
+      },
+      "glue_weight": {
+        "brief": "Weight of applied adhesive glue bead on the rim",
+        "description": "Ensures standard glue weight. Low weight (below 15 g) leads to eventual leather peeling. High weight (above 25 g) leads to glue bleed-through or hard, lumpy spots under the leather. Assembly supervisors monitor this to track adhesive consumption.",
+        "unit": "g",
+        "limits": {
+          "normal": [15.0, 25.0],
+          "warning": [12.0, 28.0],
+          "critical": [10.0, 30.0]
+        }
+      },
+      "glue_temp": {
+        "brief": "Temperature of adhesive in hot-melt dispenser nozzle",
+        "description": "Controls hot-melt viscosity. If too cold (below 120°C), the glue does not wet the surface properly, leading to eventual bonding failure and wrinkles. If too hot (above 140°C), the adhesive degrades and loses its bonding strength. Process technicians check this to prevent nozzle clogging.",
+        "unit": "°C",
+        "limits": {
+          "normal": [120.0, 140.0],
+          "warning": [115.0, 145.0],
+          "critical": [110.0, 150.0]
+        }
+      },
+      "screw_torque": {
+        "brief": "Torque level applied to multi-function switch bezel screws",
+        "description": "Ensures switch bezels are securely fastened. Low torque (below 2.4 Nm) causes loose switches that squeak or rattle. High torque (above 2.8 Nm) strips the threads in the plastic housing. Quality audits check this to ensure premium cabin feel.",
+        "unit": "Nm",
+        "limits": {
+          "normal": [2.4, 2.8],
+          "warning": [2.2, 3.0],
+          "critical": [2.0, 3.2]
+        }
+      }
+    }
+  }
+}

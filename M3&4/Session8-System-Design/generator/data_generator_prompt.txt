@@ -1,0 +1,47 @@
+You are an expert data engineer and manufacturing domain specialist. 
+Your task is to write a high-performance Python script (`generate_data.py`) that generates a realistic synthetic dataset representing an automotive steering wheel manufacturing process.
+
+The steering wheel manufacturing process consists of 5 sequential stations:
+1. Magnesium Skeleton Casting (Station 1): Die-casting lightweight skeleton.
+2. Polyurethane Foaming (Station 2): Injecting polyurethane foam over the skeleton.
+3. Conductor Insertion (Station 3): Adding heating wire elements, thermistor, and harnesses.
+4. Laser Surface Texturing (Station 4): Using lasers and robotic arms to etch a rugged grip into the solid foam rim.
+5. Leather Wrapping & Finishing (Station 5): Stitching leather, final assembly, and electrical checks.
+
+DATASET REQUIREMENTS:
+1. Arguments: The script must support a `--num-wheels` (or `-n`) CLI argument to specify the number of unique steering wheels to generate. (Default: 1,000,000).
+2. File Format: Save all tables as Parquet files using snappy or gzip compression.
+3. Performance: The script must run in under 45 seconds for 1,000,000 steering wheels and use less than 250MB of memory. Use chunk-wise batching with pyarrow.parquet.ParquetWriter.
+4. Consistency: Part IDs (e.g., 'SW-20260715-000001') must join perfectly across tables. Timestamps must be chronological (Station 1 < Station 2 < Station 3 < Station 4 < Station 5).
+5. Relational Schema:
+   - `production_log`: part_id (primary key), start_time, end_time, final_status (Pass, Fail, Rework, Scrap), scrap_reason, material_batch_id.
+   - `casting_telemetry`: part_id, machine_id, clamp_force, melt_temp, injection_pressure, die_temp, vacuum_level, cooling_time, cycle_time.
+   - `foaming_telemetry`: part_id, machine_id, polyol_temp, iso_temp, polyol_flow_rate, iso_flow_rate, mixing_ratio, injection_pressure, mold_temp, demold_time.
+   - `conductor_telemetry`: part_id, machine_id, winding_tension, pressing_force, crimp_force.
+   - `laser_telemetry`: part_id, machine_id, laser_power, laser_scan_speed, pulse_freq, robot_offset, focal_distance.
+   - `finishing_telemetry`: part_id, machine_id, wrapping_tension, glue_weight, glue_temp, screw_torque.
+   - `quality_inspections`: part_id, station_id, gate_id, timestamp, parameter_name, measured_value, lsl, usl, result (PASS/FAIL).
+   - `material_batches`: material_batch_id, supplier_name, raw_magnesium_purity, polyol_batch_no, iso_batch_no, leather_grade.
+   - `operator_logs`: part_id, station_id, operator_id, timestamp, operator_notes (unstructured text with manufacturing jargon).
+
+PARQUET SCHEMA METADATA REQUIREMENTS (Self-Documenting Data):
+To make the data self-documenting for AI agents, your script must embed descriptions and limits inside the Parquet schema:
+- Load sensor limits and descriptions from the centralized `sensor_limits.json` configuration file.
+- Table-level Metadata: Embed a `table_description` string in the metadata dict of each output PyArrow Schema (e.g., `{b'table_description': b'Process parameters collected during polyurethane foaming.'}`).
+- Field-level Metadata: For every field in the PyArrow schema, embed a `metadata` dictionary containing:
+  - `description`: A clean, human-readable column description.
+  - `unit`: The measurement unit (e.g. °C, bar, N, tons) if applicable.
+  - `limits_normal`: String representation of the lower and upper bounds of the normal zone (e.g., `"[22.0, 25.0]"`).
+  - `limits_warning`: String representation of the warning zone bounds (e.g., `"[21.0, 26.0]"`).
+  - `limits_critical`: String representation of the critical zone bounds (e.g., `"[20.0, 27.0]"`).
+- Non-sensor columns (e.g., `part_id`, `machine_id`) must still have a clean `description` entry in their field-level metadata dict.
+
+INJECTED ANOMALIES & CORRELATIONS (The "Root-Cause" Clues):
+Your script must programmatically inject the following patterns:
+- Anomaly 1 (Supplier Issue): Material Batch 'MB-2026-B3' has low purity (92% instead of 98%). This causes a 15% probability of casting cracks or shrinkage defects in Station 1, failing QC-100 on porosity_pct.
+- Anomaly 2 (Machine Wear Drift): Foaming Machine 'FOAM-04' has a deteriorating flow valve. Over a 5-day window, the Isocyanate flow rate slowly drifts downwards, shifting Mixing Ratio (Polyol:Iso) above 100:112, causing soft foam (QC-200 hardness_shore_a failure).
+- Anomaly 3 (Laser Over-Ablation Damage): If Laser Power at Station 4 exceeds 120W or Robot Offset exceeds 0.2mm, the laser damages the underlying heating element. The element passes QC-300 initially (target resistance 2.3 Ω), but fails final QC-500 with infinite resistance (wire break).
+- Anomaly 4 (Operator Tension Damage): Operator 'OP-098' on night shifts (Shift 3) gets fatigued. After 03:00 AM, their wrapping tension at Station 5 spikes to over 35N. This breaks the heating wire, resulting in a QC-500 heater resistance failure (wire break) despite passing QC-300.
+- Anomaly 5 (Cold Glue Adhesion): If glue_temp at Station 5 drops below 110°C, the adhesive fails to bond, leading to cosmetic failures in QC-500.
+
+Ensure the full script is self-contained and handles chunk-wise streaming to Parquet properly.
