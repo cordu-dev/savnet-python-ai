@@ -17,7 +17,8 @@ Before we write a single line of agent orchestration logic, we must design the a
 
 ## 2. Multi-Agent System Architecture
 
-Our system is modeled as a collaborative team of digital manufacturing investigators. The interaction is choreographed by an **Orchestrator Agent** writing to a shared **State**.
+Our system is modeled as a collaborative team of digital manufacturing investigators.
+The interaction is choreographed by an **Orchestrator Agent** writing to a shared **State**.
 
 ```mermaid
 graph TD
